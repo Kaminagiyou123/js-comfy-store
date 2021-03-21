@@ -17,7 +17,5 @@ checkoutBtn.addEventListener("click", () => {
 });
 
 export const openCart = () => {
-  oggleCart.addEventListener("click", () => {
-    cartOverlay.classList.add("show");
-  });
+  cartOverlay.classList.add("show");
 };
