@@ -22,7 +22,7 @@ const formatPrice = (data) => {
     style: "currency",
     currency: "USD",
   });
-  return formatter.format(data / 100);
+  return formatter.format((data / 100).toFixed(2));
 };
 
 const getStorageItem = (item) => {

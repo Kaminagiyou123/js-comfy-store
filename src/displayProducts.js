@@ -9,10 +9,10 @@ const display = (products, element) => {
           <div class="product-container">
             <img src="${image}" class="product-img img" alt="${image}" />
             <div class="product-icons">
-              <a href="product.html?id=1" alt="product" class="product-icon">
+              <a href="product.html?id=${id}" alt="product" class="product-icon">
                 <i class="fas fa-search"></i>
               </a>
-              <button class="product-cart-btn product-icon">
+              <button class="product-cart-btn product-icon" data-id=${id}>
                 <i class="fas fa-shopping-cart"></i>
               </button>
             </div>
@@ -25,7 +25,12 @@ const display = (products, element) => {
     `;
     })
     .join("");
-  console.log(products, element);
+  element.addEventListener("click", (e) => {
+    const parent = e.target.parentElement;
+    if (parent.classList.contains("product-cart-btn")) {
+      addToCart(parent.dataset.id);
+    }
+  });
 };
 
 export default display;
