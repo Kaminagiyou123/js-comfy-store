@@ -59,6 +59,18 @@ function increaseAmount(id) {
   return newAmount;
 }
 
+function decreaseAmount(id) {
+  let newAmount;
+  cart = cart.map((cartItem) => {
+    if (cartItem.id === id) {
+      newAmount = cartItem.amount - 1;
+      return { ...cartItem, amount: newAmount };
+    }
+    return cartItem;
+  });
+  return newAmount;
+}
+
 function displayCartTotal() {
   const amount = cart.reduce((total, cartItem) => {
     return (total += cartItem.amount * cartItem.price);
@@ -70,8 +82,41 @@ function displayCartItemsDOM() {
     addToCartDOM(item);
   });
 }
+function removeItem(id) {
+  cart = cart.filter((cartItem) => cartItem.id !== id);
+}
+function setupCartFunctionality() {
+  cartItemsDOM.addEventListener("click", (e) => {
+    const element = e.target;
+    const parent = e.target.parentElement;
+    const id = e.target.dataset.id;
+    const parentID = e.target.parentElement.dataset.id;
+    //remove
+    if (element.classList.contains("cart-item-remove-btn")) {
+      removeItem(id);
+      parent.parentElement.remove();
+    }
+    //increase
+    if (parent.classList.contains("cart-item-increase-btn")) {
+      const newAmount = increaseAmount(parentID);
+      parent.nextElementSibling.textContent = newAmount;
+    }
 
-function setupCartFunctionality() {}
+    //descrease
+    if (parent.classList.contains("cart-item-decrease-btn")) {
+      const newAmount = decreaseAmount(parentID);
+      if (newAmount === 0) {
+        removeItem(parentID);
+        parent.parentElement.parentElement.remove();
+      }
+      parent.previousElementSibling.textContent = newAmount;
+    }
+
+    displayCartItemCount();
+    displayCartTotal();
+    setStorageItem("cart", cart);
+  });
+}
 
 const init = () => {
   //display amount of cart Items
@@ -80,8 +125,7 @@ const init = () => {
   displayCartTotal();
   // add all cart items to the dom
   displayCartItemsDOM();
-
-  //set upu cart functionality
+  //set up cart functionality
   setupCartFunctionality();
 };
 init();
