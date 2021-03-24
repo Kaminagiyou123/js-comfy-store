@@ -28,12 +28,45 @@ export const addToCart = (id) => {
   } else {
     //update values
   }
-
+  // add one to the item count
+  displayCartItemCount();
+  //display cart totals
+  displayCartTotal();
+  //set cart in localstorage
+  setStorageItem("cart", cart);
   // more stuff coming up
   openCart();
 };
+function displayCartItemCount() {
+  const amount = cart.reduce((total, cartItem) => {
+    return (total += cartItem.amount);
+  }, 0);
+  cartItemCountDOM.textContent = amount;
+}
+
+function displayCartTotal() {
+  const amount = cart.reduce((total, cartItem) => {
+    return (total += cartItem.amount * cartItem.price);
+  }, 0);
+  cartTotalDOM.textContent = `Total: ${formatPrice(amount)}`;
+}
+function displayCartItemsDOM() {
+  cart.forEach((item) => {
+    addToCartDOM(item);
+  });
+}
+
+function setupCartFunctionality() {}
 
 const init = () => {
-  console.log(cart);
+  //display amount of cart Items
+  displayCartItemCount();
+  //display totals
+  displayCartTotal();
+  // add all cart items to the dom
+  displayCartItemsDOM();
+
+  //set upu cart functionality
+  setupCartFunctionality();
 };
 init();
